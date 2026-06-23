@@ -1,11 +1,95 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useGetProductByIdQuery } from "@/lib/features/api/ecommerceApi";
 
-export default function CategoryPage() {
-    const { data, isLoading } = useGetProductByIdQuery(12);
-    if (isLoading) {
-        return <p>Loading...</p>;
-    }
+type Product = {
+  id: number;
+  title: string;
+  slug: string;
+  price: number;
+  description: string;
+  images: string[];
+};
 
-    return <div key={data?.id}>{data?.title}</div>
+export default function CategoryPage() {
+  const { data, isLoading, isError } = useGetProductByIdQuery(12);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#0f1117] p-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="h-4 w-32 bg-white/5 rounded mb-8 animate-pulse" />
+          <div className="grid grid-cols-4 gap-4">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="rounded-xl border border-white/5 animate-pulse">
+                <div className="aspect-square bg-white/5 rounded-t-xl" />
+                <div className="p-4 space-y-2">
+                  <div className="h-3 bg-white/5 rounded w-3/4" />
+                  <div className="h-3 bg-white/5 rounded w-1/2" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError || !data) {
+    return (
+      <div className="min-h-screen bg-[#0f1117] flex items-center justify-center text-white/20">
+        <div className="text-center">
+          <p className="text-4xl mb-3">⚠️</p>
+          <p className="text-sm">Failed to load category.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Casting single product as array to simulate a category listing
+  const products: Product[] = [data];
+
+  return (
+    <div className="min-h-screen bg-[#0f1117] p-6">
+      <div className="max-w-6xl mx-auto">
+
+        {/* Header */}
+        <div className="mb-8">
+          <p className="text-xs text-white/20 uppercase tracking-widest mb-2">Category</p>
+          <h1 className="text-2xl font-medium text-white/90">All Products</h1>
+        </div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-4 gap-4">
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="group rounded-xl border border-white/5 overflow-hidden bg-white/3
+                         hover:border-blue-500/30 hover:bg-white/6 transition-all duration-150"
+            >
+              <div className="aspect-square bg-white/5 overflow-hidden">
+                <img
+                  src={product.images[0]}
+                  alt={product.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="p-4">
+                <h2 className="text-sm font-medium text-white/90 line-clamp-1 mb-1">
+                  {product.title}
+                </h2>
+                <p className="text-xs text-white/30 line-clamp-2 leading-relaxed mb-3">
+                  {product.description}
+                </p>
+                <span className="text-sm font-medium text-blue-400">
+                  ${product.price}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  );
 }

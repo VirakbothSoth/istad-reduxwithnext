@@ -1,67 +1,119 @@
-import { CounterComponent } from "@/components/counter";
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-[#0f1117] text-white flex flex-col">
+      {/* Main */}
+      <main className="flex-1 max-w-6xl mx-auto w-full px-6">
+        {/* Hero */}
+        <section className="py-24 max-w-2xl">
+          <div className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1 rounded-full
+                          border border-blue-500/20 bg-blue-500/10 text-blue-400 mb-6">
+            ⚡ Powered by Redux Toolkit + RTK Query
+          </div>
+          <h1 className="text-5xl font-medium leading-tight tracking-tight text-white/90 mb-5">
+            Modern state management,<br />
+            <span className="text-blue-400">finally simple.</span>
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-base text-white/40 leading-relaxed mb-8 max-w-lg">
+            A hands-on class project exploring Redux Toolkit, RTK Query, and the Next.js App Router —
+            built lesson by lesson at ISTAD.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-39.5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/8 px-5 transition-colors hover:border-transparent hover:bg-black/4 dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-95.5"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-        <CounterComponent/>
+          <div className="flex items-center gap-3">
+            <Link href="/products"
+              className="px-5 py-2.5 rounded-lg text-sm font-medium bg-blue-600 hover:bg-blue-500
+                         text-white transition-colors duration-150">
+              Browse products
+            </Link>
+            <Link href="/category"
+              className="px-5 py-2.5 rounded-lg text-sm font-medium border border-white/10
+                         text-white/50 hover:text-white/90 hover:border-white/20
+                         transition-all duration-150">
+              View categories
+            </Link>
+          </div>
+        </section>
+
+        {/* Stats */}
+        <section className="grid grid-cols-3 gap-3 mb-16">
+          {[
+            { label: "Products", value: "24", sub: "via RTK Query" },
+            { label: "Categories", value: "5", sub: "filterable" },
+            { label: "Redux slices", value: "3", sub: "counter · product · api" },
+          ].map((s) => (
+            <div key={s.label}
+              className="rounded-xl border border-white/5 bg-white/3 px-5 py-4">
+              <p className="text-xs text-white/30 mb-1">{s.label}</p>
+              <p className="text-2xl font-medium text-white/90">{s.value}</p>
+              <p className="text-xs text-blue-400/70 mt-1">{s.sub}</p>
+            </div>
+          ))}
+        </section>
+
+        {/* Feature cards */}
+        <section className="mb-24">
+          <p className="text-xs font-medium uppercase tracking-widest text-white/20 mb-4">
+            What you&apos;re learning
+          </p>
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              {
+                icon: "🗄",
+                title: "RTK Query",
+                desc: "Auto-generated hooks handle caching, loading, and error states — no manual thunks needed.",
+                tag: "useGetProductsQuery()",
+              },
+              {
+                icon: "🧩",
+                title: "Slices",
+                desc: "Reducers and actions live together. One createSlice call replaces actions, types, and reducers.",
+                tag: "createSlice()",
+              },
+              {
+                icon: "🔁",
+                title: "Typed hooks",
+                desc: "useAppSelector and useAppDispatch wrap the Redux hooks with your store's exact types.",
+                tag: "useAppDispatch()",
+              },
+            ].map((f) => (
+              <div key={f.title}
+                className="rounded-xl border border-white/5 bg-white/3
+                           hover:border-blue-500/20 hover:bg-white/5
+                           transition-all duration-150 p-5">
+                <div className="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20
+                                flex items-center justify-center text-lg mb-4">
+                  {f.icon}
+                </div>
+                <h3 className="text-sm font-medium text-white/90 mb-2">{f.title}</h3>
+                <p className="text-xs text-white/30 leading-relaxed mb-4">{f.desc}</p>
+                <code className="text-xs text-blue-400/70 bg-blue-500/10 px-2 py-1 rounded-md">
+                  {f.tag}
+                </code>
+              </div>
+            ))}
+          </div>
+        </section>
+
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-white/5 px-6 py-6">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2 text-white/20 text-xs">
+            <span className="w-5 h-5 rounded bg-blue-500/10 border border-blue-500/20
+                             flex items-center justify-center text-blue-400 text-[10px]">⚡</span>
+            istadshop — ISTAD class project
+          </div>
+          <div className="flex items-center gap-4 text-xs text-white/20">
+            <span>Next.js 15</span>
+            <span className="text-white/10">·</span>
+            <span>Redux Toolkit</span>
+            <span className="text-white/10">·</span>
+            <span>RTK Query</span>
+          </div>
+        </div>
+      </footer>
+
     </div>
   );
 }

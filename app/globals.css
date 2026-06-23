@@ -25,11 +25,71 @@ body {
   font-family: "Noto Sans SC", Arial, Helvetica, sans-serif;
 }
 
-@layer base{
-  .test {
-    @apply mb-5;
-    @apply flex w-fit py-2 px-3.5 items-center justify-center rounded-lg;
-    @apply border border-solid border-black/8 transition-colors hover:border-transparent;
-    @apply bg-black hover:bg-black/4 dark:border-white/[.145] dark:hover:bg-[#1a1a1a];
+@layer base {
+  html {
+    @apply scroll-smooth antialiased;
   }
+
+  body {
+    @apply bg-slate-50 text-slate-900 text-sm leading-relaxed min-h-screen;
+  }
+
+  /* Typography */
+  h1 { @apply text-3xl font-medium leading-tight tracking-tight; }
+  h2 { @apply text-xl font-medium leading-snug; }
+  h3 { @apply text-base font-medium; }
+  h4 { @apply text-sm font-medium; }
+
+  p { @apply text-slate-600 leading-relaxed; }
+
+  a {
+    @apply text-blue-500 no-underline transition-colors duration-150;
+  }
+  a:hover { @apply text-blue-700; }
+
+  /* Buttons */
+  button {
+    @apply cursor-pointer font-medium text-sm rounded-lg px-4 py-2
+           border border-transparent transition-all duration-150
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Inputs */
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    @apply w-full text-sm px-3 py-2 rounded-lg border border-slate-200
+           bg-white text-slate-900 outline-none placeholder:text-slate-400
+           transition-colors duration-150
+           focus:border-blue-400 focus:ring-2 focus:ring-blue-400/10;
+  }
+
+  /* Tables */
+  table { @apply w-full text-sm border-collapse; }
+
+  thead { @apply bg-blue-900 text-white; }
+  thead th { @apply text-left font-medium px-4 py-2.5 text-xs uppercase tracking-wider; }
+
+  tbody tr { @apply border-b border-slate-100 transition-colors duration-100; }
+  tbody tr:hover { @apply bg-blue-50/50; }
+  tbody td { @apply px-4 py-2.5 text-slate-600; }
+
+  /* Code */
+  code {
+    @apply text-xs font-mono bg-slate-100 text-blue-800
+           px-1.5 py-0.5 rounded;
+  }
+
+  pre {
+    @apply bg-slate-900 text-slate-100 rounded-xl p-4 text-xs
+           font-mono overflow-x-auto;
+  }
+  pre code { @apply bg-transparent text-inherit p-0; }
+
+  /* HR */
+  hr { @apply border-none border-t border-slate-100 my-6; }
+
+  /* Lists */
+  ul { @apply list-disc list-inside text-slate-600 space-y-1; }
+  ol { @apply list-decimal list-inside text-slate-600 space-y-1; }
 }
