@@ -1,44 +1,47 @@
 "use client";
+import { productSchema } from "@/lib/validation/create";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useCreateProductMutation, useUploadFileMutation } from "@/redux/services/productApi";
+import { Controller } from "react-hook-form";
 import z from "zod";
 
-type ProductFormValues = {
-    title: string;
-    price: number;
-    categoryId: number;
-    description: string;
-    images: string[];
-}
-const productSchema = z.object({
-    title: z.string().min(5, "title must be at least 5 chars."),
-    price: z.coerce.number<number>().min(1, "price must be greater than zero"),
-    categoryId: z.coerce.number<number>(),
-    description: z.string(),
-    images: z.array(z.string()),
-});
+//type ProductFormValues = z.infer<typeof productSchema>;
+type ProductFormInput = z.input<typeof productSchema>;
+type ProductFormOutput = z.output<typeof productSchema>;
 
 export function ProductForm() {
-const {
+  const [createProduct] = useCreateProductMutation();
+  const [uploadFile] = useUploadFileMutation();
+
+  const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
     reset,
-  } = useForm<ProductFormValues>({
+  } = useForm<ProductFormInput, unknown, ProductFormOutput>({
     resolver: zodResolver(productSchema),
     defaultValues: {
       title: "",
       price: 0,
-      categoryId: 1,
       description: "",
-      images: [],
+      categoryId: 1,
     },
   });
   // handle submit
-  function onSubmit(data: ProductFormValues) {
+  async function onSubmit(data: ProductFormOutput) {
     // logic for submit data to server
-    console.log("Product Data : ", data);
-    reset();
+    try {
+      const uploadedFile = await uploadFile(data.file).unwrap();
+      await createProduct({ 
+        ...data,
+        images: [uploadedFile.location],
+      }).unwrap();
+      reset();
+    } catch (error) {
+      console.error("Error message: ", error);
+    }
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 max-w-md mx-auto">
@@ -84,6 +87,26 @@ const {
           <p className="text-red-500 text-sm">{errors.price.message}</p>
         )}
       </div>
+      {/* description */}
+      <div>
+        <label htmlFor="desc">Description</label>
+        <input
+          id="desc"
+          type="text"
+          className="text-white/70 border px-3 py-2 rounded w-full bg-blue-500/10 border-blue-500/20"
+          {...register(
+            "description",
+            //   {
+            //   required: "description is require",
+            //   minLength: 10,
+            // }
+          )}
+        />
+        {/* error message */}
+        {errors.description && (
+          <p className="text-red-500 text-sm">{errors.description.message}</p>
+        )}
+      </div>
       {/* category id */}
       <div>
         <label htmlFor="category">Category</label>
@@ -105,37 +128,21 @@ const {
           <p className="text-red-500 text-sm">{errors.categoryId.message}</p>
         )}
       </div>
-      {/* description */}
-      <div>
-        <label htmlFor="desc">Description</label>
-        <input
-          id="desc"
-          type="text"
-          className="text-white/70 border px-3 py-2 rounded w-full bg-blue-500/10 border-blue-500/20"
-          {...register(
-            "description",
-            //   {
-            //   required: "description is require",
-            //   minLength: 10,
-            // }
-          )}
-        />
-        {/* error message */}
-        {errors.description && (
-          <p className="text-red-500 text-sm">{errors.description.message}</p>
-        )}
-      </div>
       {/* image */}
       <div>
-        <label className="block mb-1">Image URL</label>
-        <input
-          type="text"
-          placeholder="Image URL"
-          className="text-white/70 border px-3 py-2 rounded w-full bg-blue-500/10 border-blue-500/20"
-          {...register("images")}
-        />{" "}
-        {errors.images && (
-          <p className="text-red-500 text-sm">{errors.images.message}</p>
+        <Controller
+          name="file"
+          control={control}
+          render={({ field }) => (
+            <input
+              type="file"
+              accept="image/jpeg, image/png,image/webp"
+              onChange={(e) => {field.onChange(e.target.files?.[0])}}
+              className="border px-3 py-2 rounded w-full" />
+          )}
+        />
+        {errors.file && (
+          <p className="text-red-500 text-sm mt-1">{errors.file.message}</p>
         )}
       </div>
       {/* submit button */}
