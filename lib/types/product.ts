@@ -15,3 +15,12 @@ export type CreateProduct = {
     categoryId: number;
     images: string[];
 }
+
+//update product type 
+export type UpdateProduct = {
+    title: string;
+    price: number;
+    description: string;
+    categoryId: number;
+    images: string[];
+}

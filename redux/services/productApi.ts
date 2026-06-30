@@ -1,5 +1,5 @@
 import { ecommerceApi } from "../api";
-import { Product, CreateProduct } from "@/lib/types/product";
+import { Product, CreateProduct, UpdateProduct } from "@/lib/types/product";
 
 export type FileResponse = {
     originalname: string;
@@ -26,13 +26,28 @@ export const productApi = ecommerceApi.injectEndpoints({
                 const formData = new FormData();
                 formData.append("file", f);
                 return {
-                    url: "/files/upload",
+                    url: "/api/v1/files/upload",
                     method: "POST",
                     body: formData,
                 };
             }
+        }),
+
+        updateProduct: b.mutation<UpdateProduct,{id: number, updatedProduct: UpdateProduct}> ({
+            query: ({id, updatedProduct}) => ({
+                url: `/api/v1/products/${id}`,
+                method: "PUT",
+                body: updatedProduct
+            })
+        }),
+
+        deleteProduct: b.mutation<any, {id:number}>({
+            query: ({id}) => ({
+                url: `/api/v1/products/${id}`,
+                method: "DELETE",
+            })
         })
     })
 })
 
-export const { useGetProductsQuery, useCreateProductMutation, useUploadFileMutation } = productApi;
+export const { useGetProductsQuery, useCreateProductMutation, useUploadFileMutation, useUpdateProductMutation} = productApi;

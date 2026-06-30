@@ -1,32 +1,30 @@
 "use client";
-import { productSchema } from "@/lib/validation/create";
+import { updateProductSchema } from "@/lib/validation/update";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useCreateProductMutation, useUploadFileMutation } from "@/redux/services/productApi";
+import { useUpdateProductMutation, useUploadFileMutation } from "@/redux/services/productApi";
 import { Controller } from "react-hook-form";
 import z from "zod";
 
-//type ProductFormValues = z.infer<typeof productSchema>;
-type ProductFormInput = z.input<typeof productSchema>;
-type ProductFormOutput = z.output<typeof productSchema>;
+type ProductFormInput = z.input<typeof updateProductSchema>;
+type ProductFormOutput = z.output<typeof updateProductSchema>;
 
-export function ProductForm() { 
-  const [createProduct] = useCreateProductMutation();
+export function UpdateProductForm() {
+  const [updateProduct] = useUpdateProductMutation();
   const [uploadFile] = useUploadFileMutation();
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<ProductFormInput, unknown, ProductFormOutput>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(updateProductSchema),
     defaultValues: {
       title: "",
       price: 0,
       description: "",
-      categoryId: 1,
     },
   });
   // handle submit
@@ -34,9 +32,9 @@ export function ProductForm() {
     // logic for submit data to server
     try {
       const uploadedFile = await uploadFile(data.file).unwrap();
-      await createProduct({ 
-        ...data,
-        images: [uploadedFile.location],
+      await updateProduct({
+        id: 0,
+        updatedProduct: { ...data, images: [uploadedFile.location], categoryId: 1 }
       }).unwrap();
       reset();
     } catch (error) {
@@ -107,27 +105,6 @@ export function ProductForm() {
           <p className="text-red-500 text-sm">{errors.description.message}</p>
         )}
       </div>
-      {/* category id */}
-      <div>
-        <label htmlFor="category">Category</label>
-        <input
-          placeholder="enter category"
-          id="category"
-          type="text"
-          className="text-white/70 border px-3 py-2 rounded w-full bg-blue-500/10 border-blue-500/20"
-          {...register(
-            "categoryId",
-            // {
-            //   required: "title is require",
-            //   minLength: { value: 10, message: "title at least 10 characters" },
-            //  }
-          )}
-        />
-        {/* error message */}
-        {errors.categoryId && (
-          <p className="text-red-500 text-sm">{errors.categoryId.message}</p>
-        )}
-      </div>
       {/* image */}
       <div>
         <Controller
@@ -137,7 +114,7 @@ export function ProductForm() {
             <input
               type="file"
               accept="image/jpeg, image/png,image/webp"
-              onChange={(e) => {field.onChange(e.target.files?.[0])}}
+              onChange={(e) => { field.onChange(e.target.files?.[0]) }}
               className="border px-3 py-2 rounded w-full" />
           )}
         />
@@ -148,7 +125,7 @@ export function ProductForm() {
       {/* submit button */}
       <button className="px-5 py-2.5 rounded-lg text-sm font-medium bg-blue-600 hover:bg-blue-500
                          text-white transition-colors duration-150">
-        Submit
+        {isSubmitting ? "submitting" : "submit"}
       </button>
     </form>
   );
