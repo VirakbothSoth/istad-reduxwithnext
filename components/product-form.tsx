@@ -52,7 +52,7 @@ export function ProductForm() {
           placeholder="enter title"
           id="title"
           type="text"
-          className="text-white/70 border px-3 py-2 rounded w-full bg-blue-500/10 border-blue-500/20"
+          className="text-black border px-3 py-2 rounded w-full bg-blue-500/10 border-blue-500/20"
           {...register(
             "title",
             // {
@@ -73,7 +73,7 @@ export function ProductForm() {
           placeholder="enter price"
           id="price"
           type="number"
-          className="text-white/70 border px-3 py-2 rounded w-full bg-blue-500/10 border-blue-500/20"
+          className="text-black border px-3 py-2 rounded w-full bg-blue-500/10 border-blue-500/20"
           {...register(
             "price",
             // {
@@ -93,7 +93,7 @@ export function ProductForm() {
         <input
           id="desc"
           type="text"
-          className="text-white/70 border px-3 py-2 rounded w-full bg-blue-500/10 border-blue-500/20"
+          className="text-black border px-3 py-2 rounded w-full bg-blue-500/10 border-blue-500/20"
           {...register(
             "description",
             //   {
@@ -114,7 +114,7 @@ export function ProductForm() {
           placeholder="enter category"
           id="category"
           type="text"
-          className="text-white/70 border px-3 py-2 rounded w-full bg-blue-500/10 border-blue-500/20"
+          className="text-black border px-3 py-2 rounded w-full bg-blue-500/10 border-blue-500/20"
           {...register(
             "categoryId",
             // {

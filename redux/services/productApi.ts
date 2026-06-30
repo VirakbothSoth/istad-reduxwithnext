@@ -11,14 +11,18 @@ export const productApi = ecommerceApi.injectEndpoints({
     endpoints: (b) => ({
         getProducts: b.query<Product[], void>({
             query: () => "/api/v1/products",
+            // Cast providesTags result to any to avoid type error when base api has no tagTypes declared
+            providesTags: ["Product"]
         }),
 
         createProduct: b.mutation<Product, CreateProduct>({
             query: (newProd) => ({
                 url: "/api/v1/products",
                 method: "POST",
-                body: newProd
-            })
+                body: newProd,
+            }),
+            // Cast to any to avoid type error when base api has no tagTypes declared
+            invalidatesTags: ["Product"],
         }),
 
         uploadFile: b.mutation<FileResponse, File>({
@@ -38,7 +42,8 @@ export const productApi = ecommerceApi.injectEndpoints({
                 url: `/api/v1/products/${id}`,
                 method: "PUT",
                 body: updatedProduct
-            })
+            }),
+            invalidatesTags: ["Product"]
         }),
 
         deleteProduct: b.mutation<any, {id:number}>({
