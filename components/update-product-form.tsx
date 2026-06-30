@@ -22,9 +22,10 @@ export function UpdateProductForm() {
   } = useForm<ProductFormInput, unknown, ProductFormOutput>({
     resolver: zodResolver(updateProductSchema),
     defaultValues: {
-      title: "",
-      price: 0,
-      description: "",
+      title: "Testing again and again",
+      price: 692945,
+      description: "e4tijo35yom5y",
+      categoryId: 1,
     },
   });
   // handle submit
@@ -33,8 +34,8 @@ export function UpdateProductForm() {
     try {
       const uploadedFile = await uploadFile(data.file).unwrap();
       await updateProduct({
-        id: 0,
-        updatedProduct: { ...data, images: [uploadedFile.location], categoryId: 1 }
+        id: 8,
+        updatedProduct: { ...data, images: [uploadedFile.location] }
       }).unwrap();
       reset();
     } catch (error) {
@@ -124,7 +125,7 @@ export function UpdateProductForm() {
       </div>
       {/* submit button */}
       <button className="px-5 py-2.5 rounded-lg text-sm font-medium bg-blue-600 hover:bg-blue-500
-                         text-white transition-colors duration-150">
+                         text-white transition-colors duration-150" type="submit">
         {isSubmitting ? "submitting" : "submit"}
       </button>
     </form>

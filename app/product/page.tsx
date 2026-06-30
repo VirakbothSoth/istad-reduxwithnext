@@ -1,8 +1,8 @@
 "use client";
-import { useGetProductsQuery } from "@/lib/features/api/ecommerceApi";
+import { useGetProductsQuery } from "@/redux/services/productApi";
 
 export default function ProductPage() {
-    const {data: products=[], isError, isLoading} = useGetProductsQuery();
+    const { data: products = [], isError, isLoading } = useGetProductsQuery();
 
     console.log("isLoading : ", isLoading);
     console.log("isError : ", isError);

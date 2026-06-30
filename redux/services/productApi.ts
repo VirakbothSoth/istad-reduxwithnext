@@ -11,8 +11,7 @@ export const productApi = ecommerceApi.injectEndpoints({
     endpoints: (b) => ({
         getProducts: b.query<Product[], void>({
             query: () => "/api/v1/products",
-            // Cast providesTags result to any to avoid type error when base api has no tagTypes declared
-            providesTags: ["Product"]
+            // providesTags: ["Product"]
         }),
 
         createProduct: b.mutation<Product, CreateProduct>({
@@ -21,8 +20,7 @@ export const productApi = ecommerceApi.injectEndpoints({
                 method: "POST",
                 body: newProd,
             }),
-            // Cast to any to avoid type error when base api has no tagTypes declared
-            invalidatesTags: ["Product"],
+            // invalidatesTags: ["Product"],
         }),
 
         uploadFile: b.mutation<FileResponse, File>({
@@ -37,17 +35,17 @@ export const productApi = ecommerceApi.injectEndpoints({
             }
         }),
 
-        updateProduct: b.mutation<UpdateProduct,{id: number, updatedProduct: UpdateProduct}> ({
-            query: ({id, updatedProduct}) => ({
+        updateProduct: b.mutation<Product, { id: number, updatedProduct: object }>({
+            query: ({ id, updatedProduct }) => ({
                 url: `/api/v1/products/${id}`,
                 method: "PUT",
                 body: updatedProduct
             }),
-            invalidatesTags: ["Product"]
+            // invalidatesTags: ["Product"]
         }),
 
-        deleteProduct: b.mutation<any, {id:number}>({
-            query: ({id}) => ({
+        deleteProduct: b.mutation<any, { id: number }>({
+            query: ({ id }) => ({
                 url: `/api/v1/products/${id}`,
                 method: "DELETE",
             })
@@ -55,4 +53,4 @@ export const productApi = ecommerceApi.injectEndpoints({
     })
 })
 
-export const { useGetProductsQuery, useCreateProductMutation, useUploadFileMutation, useUpdateProductMutation} = productApi;
+export const { useGetProductsQuery, useCreateProductMutation, useUploadFileMutation, useUpdateProductMutation } = productApi;

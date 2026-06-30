@@ -7,7 +7,6 @@ export const updateProductSchema = z.object({
     // categoryId: z.coerce.number<number>(),
     price: z.coerce.number().min(1, "price must be greater than zero"),
     description: z.string(),
-    // categoryId: z.coerce.number(),
-    images: z.string(),
+    categoryId: z.coerce.number(),
     file: z.file().min(1).max(1024 * 1024)
 });

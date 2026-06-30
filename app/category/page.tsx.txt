@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { useGetProductByIdQuery } from "@/lib/features/api/ecommerceApi";
+import { useGetProductByIdQuery } from "@/redux/services/productApi";
 
 type Product = {
   id: number;

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { useGetProductsQuery } from "@/lib/features/api/ecommerceApi";
+import { useGetProductsQuery } from "@/redux/services/productApi"
 
 export default function ProductPage() {
   const { data: products = [], isError, isLoading } = useGetProductsQuery();
@@ -39,9 +39,11 @@ export default function ProductPage() {
             className="group rounded-xl border border-white/5 overflow-hidden bg-white/3
                        hover:border-blue-500/30 hover:bg-white/6 transition-all duration-150"
           >
+            <p>{product.id}</p>
             {/* Image */}
             <div className="aspect-square bg-white/5 overflow-hidden">
               <img
+                crossOrigin="anonymous"
                 src={product.images[0]}
                 alt={product.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
