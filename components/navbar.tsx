@@ -25,6 +25,11 @@ export default function Navbar() {
                          px-3 py-1.5 rounded-lg transition-all duration-150">
               Form
             </Link>
+            <Link href="/dashboard"
+            className="text-sm text-white/40 hover:text-white/90 hover:bg-white/5
+                       px-3 py-1.5 rounded-lg transition-all duration-150">
+              Dashboard
+            </Link>
           </div>
         </div>
       </nav>
